@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoBridge HPC - Global Infrastructure for Local Challenges</title>
+    <style>
+        :root {
+            --bg-main: #060d0a;
+            --panel-bg: rgba(18, 30, 24, 0.75);
+            --panel-border: #1d382b;
+            --accent-green: #10b981;
+            --accent-glow: #059669;
+            --accent-cyan: #06b6d4;
+            --accent-orange: #f59e0b;
+            --text-title: #ecfdf5;
+            --text-body: #9ca3af;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-title);
+            padding: 24px;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .dashboard {
+            width: 100%;
+            max-width: 1300px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* Top Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--panel-bg);
+            border: 1px solid var(--panel-border);
+            padding: 16px 24px;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--accent-green);
+        }
+
+        .badge-hpc {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--accent-green);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            border: 1px solid var(--accent-green);
+        }
+
+        /* Main Grid */
+        .main-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+        }
+
+        /* Card Panels */
+        .card {
+            background: var(--panel-bg);
+            border: 1px solid var(--panel-border);
+            border-radius: 14px;
+            padding: 24px;
+            backdrop-filter: blur(8px);
+        }
+
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--text-title);
+        }
+
+        /* Hero Banner */
+        .hero {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(6, 182, 212, 0.05) 100%), var(--panel-bg);
+            border: 1px solid var(--panel-border);
+            border-radius: 14px;
+            padding: 30px;
+        }
+
+        .hero h1 {
+            font-size: 2rem;
+            margin-bottom: 12px;
+            background: linear-gradient(90deg, #34d399, #38bdf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            color: var(--text-body);
+            line-height: 1.6;
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .stat-item {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--panel-border);
+            padding: 16px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--accent-green);
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--text-body);
+            margin-top: 4px;
+            text-transform: uppercase;
+        }
+
+        /* Controls & Interactive Features */
+        .controls-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 15px;
+        }
+
+        .btn {
+            background: #152e22;
+            color: var(--text-title);
+            border: 1px solid var(--panel-border);
+            padding: 12px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn:hover {
+            background: var(--accent-glow);
+            color: white;
+            border-color: var(--accent-green);
+            box-shadow: 0 0 12px rgba(16, 185, 129, 0.4);
+        }
+
+        .btn-active {
+            background: var(--accent-green) !important;
+            color: #000 !important;
+        }
+
+        /* Slider Controls */
+        .slider-group {
+            margin-top: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .slider-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            color: var(--text-body);
+        }
+
+        input[type=range] {
+            width: 100%;
+            accent-color: var(--accent-green);
+            background: #112219;
+            height: 6px;
+            border-radius: 3px;
+        }
+
+        /* Live Terminal / System Log */
+        .terminal {
+            background: #030806;
+            border: 1px solid var(--panel-border);
+            border-radius: 10px;
+            padding: 14px;
+            font-family: "Courier New", Courier, monospace;
+            font-size: 0.8rem;
+            color: #34d399;
+            height: 200px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .log-entry {
+            line-height: 1.4;
+        }
+
+        .log-time {
+            color: var(--text-body);
+        }
+
+        /* Interactive Map / Graph Canvas Mockup */
+        .visualizer {
+            background: #050e0a;
+            border: 1px dashed var(--panel-border);
+            border-radius: 10px;
+            height: 220px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .node-pulse {
+            width: 12px;
+            height: 12px;
+            background: var(--accent-green);
+            border-radius: 50%;
+            box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+            animation: pulse 1.8s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+            70% { transform: scale(1.3); box-shadow: 0 0 0 15px rgba(16, 185, 129, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+        }
+
+        @media (max-width: 900px) {
+            .main-content { grid-template-columns: 1fr; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="dashboard">
+        <!-- Header Nav -->
+        <header>
+            <div class="brand">
+                <span>🌐</span> EcoBridge HPC
+            </div>
+            <div style="display: flex; gap: 10px; align-items: center;">
+                <span class="badge-hpc">ASEAN HPC Node Active</span>
+                <span style="font-size: 0.85rem; color: var(--text-body);">Thammasat & BRIN Grid</span>
+            </div>
+        </header>
+
+        <!-- Hero Section -->
+        <div class="hero">
+            <h1>Bridging Global Infrastructure to Address Local Challenges</h1>
+            <p>Sistem antarmuka terintegrasi berbasis High Performance Computing (HPC) & AI. Memfasilitasi pemodelan iklim lokal, simulasi evakuasi banjir, pemetaan pertanian cerdas, serta optimasi energi berbasis superkomputer.</p>
+            
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-value" id="valFlops">1.2 ExaFLOPS</div>
+                    <div class="stat-label">Kecepatan Komputasi</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="valNodes">64 Node</div>
+                    <div class="stat-label">Alokasi Klaster GPU</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="valEnergy">18% Saved</div>
+                    <div class="stat-label">Efisiensi Energi HPC</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="valStatus" style="color: #34d399;">ONLINE</div>
+                    <div class="stat-label">Status Job Batch</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content Layout -->
+        <div class="main-content">
+            <!-- Left Side: Interactive Moduls & Visualizer -->
+            <div style="display: flex; flex-direction: column; gap: 20px;">
+                
+                <div class="card">
+                    <div class="card-title">
+                        <span>🚀 Modul Simulasi Solusi Lokal</span>
+                        <span style="font-size: 0.8rem; color: var(--text-body);">Pilih modul yang akan dijalankan</span>
+                    </div>
+
+                    <div class="controls-grid">
+                        <button class="btn btn-active" onclick="switchModule('flood', this)">🌊 Flood Forecast (Banjir)</button>
+                        <button class="btn" onclick="switchModule('evac', this)">🚘 City Evacuation Simulation</button>
+                        <button class="btn" onclick="switchModule('agri', this)">🌾 Digifarm Land Mapping</button>
+                        <button class="btn" onclick="switchModule('ai', this)">🗣️ Minority Speech Translation</button>
+                    </div>
+
+                    <!-- Adjustable Parameters -->
+                    <div style="margin-top: 20px;">
+                        <div class="slider-group">
+                            <div class="slider-label">
+                                <span>Alokasi Node Komputasi (MPI Jobs):</span>
+                                <span id="lblNodes">32 Node</span>
+                            </div>
+                            <input type="range" id="rngNodes" min="8" max="128" value="32" oninput="updateSliders()">
+                        </div>
+
+                        <div class="slider-group" style="margin-top: 12px;">
+                            <div class="slider-label">
+                                <span>Intensitas Presisi Model (Floating Point Bits):</span>
+                                <span id="lblBits">FP64 (Double Precision)</span>
+                            </div>
+                            <input type="range" id="rngBits" min="1" max="3" value="3" oninput="updateSliders()">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Visual Simulation Canvas/Box -->
+                <div class="card">
+                    <div class="card-title">
+                        <span>🖥️ Monitor Visualisasi Real-Time (Grid Canvas)</span>
+                        <span style="font-size: 0.8rem; color: var(--accent-green);" id="activeModuleLabel">Modul: Flood Forecast</span>
+                    </div>
+
+                    <div class="visualizer">
+                        <div class="node-pulse"></div>
+                        <p style="margin-top: 15px; font-size: 0.9rem; color: var(--text-body);" id="vizStatusText">Memproses data citra satelit & pemodelan hidrologi...</p>
+                        <small style="color: #059669; margin-top: 5px;" id="vizMetrics">Grid Mesh: 1024x1024 | Time-step: 0.05s</small>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Right Side: Terminal Log & Action Buttons -->
+            <div style="display: flex; flex-direction: column; gap: 20px;">
+                
+                <div class="card">
+                    <div class="card-title">
+                        <span>⚡ Kontrol Eksekusi HPC</span>
+                    </div>
+                    
+                    <button class="btn" style="width: 100%; background: var(--accent-green); color: #000; font-size: 1rem; padding: 14px; margin-bottom: 10px;" onclick="runHPCJob()">
+                        ▶ Kirim Job ke Superkomputer
+                    </button>
+                    <button class="btn" style="width: 100%; background: #271717; color: #f87171;" onclick="resetConsole()">
+                        🔄 Reset Log Console
+                    </button>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">
+                        <span>📜 Live Terminal System Log</span>
+                    </div>
+                    <div class="terminal" id="terminalLog">
+                        <div class="log-entry"><span class="log-time">[18:50:01]</span> Connected to Lanta HPC Cluster (SSH Auth Success)</div>
+                        <div class="log-entry"><span class="log-time">[18:50:02]</span> SLURM Scheduler initialized. Waiting for user input...</div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentModule = 'flood';
+
+        function addLog(message) {
+            const logContainer = document.getElementById('terminalLog');
+            const now = new Date().toTimeString().split(' ')[0];
+            const entry = document.createElement('div');
+            entry.className = 'log-entry';
+            entry.innerHTML = `<span class="log-time">[${now}]</span> ${message}`;
+            logContainer.appendChild(entry);
+            logContainer.scrollTop = logContainer.scrollHeight;
+        }
+
+        function switchModule(modName, btnElement) {
+            currentModule = modName;
+            document.querySelectorAll('.controls-grid .btn').forEach(b => b.classList.remove('btn-active'));
+            btnElement.classList.add('btn-active');
+
+            const modLabel = document.getElementById('activeModuleLabel');
+            const vizText = document.getElementById('vizStatusText');
+            const vizMetrics = document.getElementById('vizMetrics');
+
+            if(modName === 'flood') {
+                modLabel.innerText = "Modul: Flood Forecast (Banjir)";
+                vizText.innerText = "Memproses data citra satelit & pemodelan hidrologi...";
+                vizMetrics.innerText = "Grid Mesh: 1024x1024 | Time-step: 0.05s";
+                addLog("Switched module to Hydro-Flood Forecasting Model.");
+            } else if(modName === 'evac') {
+                modLabel.innerText = "Modul: City Evacuation Simulation";
+                vizText.innerText = "Menganalisis pergerakan kendaraan & agen lalu lintas...";
+                vizMetrics.innerText = "Agent Count: 250,000 | Evacuation Time: 45 min";
+                addLog("Switched module to Agent-Based City Evacuation.");
+            } else if(modName === 'agri') {
+                modLabel.innerText = "Modul: Digifarm Land Mapping";
+                vizText.innerText = "Segmentasi tutupan lahan pertanian berbasis drone/satelit...";
+                vizMetrics.innerText = "Resolution: 0.5m/px | Yield Prediction: 94.2%";
+                addLog("Switched module to Digifarm Agricultural Segmentation.");
+            } else if(modName === 'ai') {
+                modLabel.innerText = "Modul: Minority Speech Translation";
+                vizText.innerText = "Fine-tuning LLM & ASR untuk penerjemahan bahasa daerah...";
+                vizMetrics.innerText = "Transformer Layers: 32 | WER: 5.4%";
+                addLog("Switched module to Minority Speech-to-Text Model.");
+            }
+        }
+
+        function updateSliders() {
+            const nodes = document.getElementById('rngNodes').value;
+            const bitsVal = document.getElementById('rngBits').value;
+            
+            document.getElementById('lblNodes').innerText = nodes + " Node";
+            document.getElementById('valNodes').innerText = nodes + " Node";
+
+            let bitText = "FP16 (Half Precision)";
+            if(bitsVal == 2) bitText = "FP32 (Single Precision)";
+            if(bitsVal == 3) bitText = "FP64 (Double Precision)";
+            
+            document.getElementById('lblBits').innerText = bitText;
+        }
+
+        function runHPCJob() {
+            const nodes = document.getElementById('rngNodes').value;
+            addLog(`Submitting SLURM batch job on ${nodes} nodes...`);
+            addLog(`sbatch --nodes=${nodes} --time=01:00:00 job_script.sh`);
+
+            document.getElementById('valStatus').innerText = "RUNNING";
+            document.getElementById('valStatus').style.color = "#f59e0b";
+
+            setTimeout(() => {
+                addLog(`[MPI] Processing parallel computations across ${nodes*8} cores...`);
+            }, 1200);
+
+            setTimeout(() => {
+                addLog("Job completed successfully! Results written to /output/results.json");
+                document.getElementById('valStatus').innerText = "FINISHED";
+                document.getElementById('valStatus').style.color = "#34d399";
+            }, 2800);
+        }
+
+        function resetConsole() {
+            document.getElementById('terminalLog').innerHTML = `
+                <div class="log-entry"><span class="log-time">[${new Date().toTimeString().split(' ')[0]}]</span> Console log reset. Ready.</div>
+            `;
+        }
+    </script>
+</body>
+</html>
